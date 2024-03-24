@@ -70,3 +70,9 @@ button:focus-visible {
   border-bottom: 4px solid rgb(74, 36, 128);
   width: 100%;
 }
+
+.coursesCoverImg{
+  width: 100%;
+  margin: 0;
+}
+
