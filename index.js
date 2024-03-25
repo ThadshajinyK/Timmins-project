@@ -55,7 +55,7 @@ const studentSchema = new mongoose.Schema({
   },
   phoneNo: String,
   address: String,
-  enrolledStudents: [
+  enrolledCourses: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Courses",
@@ -104,6 +104,17 @@ app.get("/getCourses", (req, res) => {
     console.error(error);
   }
 });
+
+app.get("/getCourse/:_id", (req, res) =>{
+  try{
+    const courseID = req.params._id;
+    Courses.findById(courseID).then(function (course) {
+      res.json(course)
+    });
+  }catch (error) {
+    console.log("Error fetching course By id ", error)
+  }
+})
 
 app.get("/getStudents", (req, res) => {
   try {

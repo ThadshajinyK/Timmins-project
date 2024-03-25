@@ -4,8 +4,11 @@ import CardImg from '../assets/courses.png'
 
 const DisplayCourses = () => {
   const [courses, setCourses] = useState([]);
-  // const [students, setStudents] = useState([])
-  // const [teachers, setTeahcers] = useState([])
+  
+  const handleEnroll =(courseID) =>{
+    // Redirect to the enrollment page with the course ID
+    window.location.href = `/enroll/${courseID}`;
+  }
 
   useEffect(() => {
     getAllCourses();
@@ -41,7 +44,7 @@ const DisplayCourses = () => {
                     <h5 className="card-title"><b>{items.courseName}</b></h5>
                     <div className="card-text">
                         <p>Course Fee: {items.courseFee}$</p>
-                        <button className="text-white"> Enroll</button>
+                        <button onClick={() => handleEnroll(items._id)} className="text-white">Enroll </button>
                         <p>{items.description}</p>
                         </div>
                     

@@ -3,6 +3,7 @@ import Header from "./compo/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Courses from "./compo/Courses";
 import Footer from "./compo/Footer";
+import Enrollment from "./compo/Enrollment";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/courses" element = {<Courses/>}></Route>
+        <Route path="/enroll/:courseID" element = {<Enrollment/>}></Route>
       </Routes>
         <Footer/>
       </BrowserRouter>
