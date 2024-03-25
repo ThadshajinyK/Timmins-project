@@ -30,7 +30,7 @@ const courseSchema = new mongoose.Schema({
   courseFee: Number,
   taughtBy: [
     {
-      type: mongoose.Schema.type.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Teachers",
     },
   ],
@@ -57,7 +57,7 @@ const studentSchema = new mongoose.Schema({
   address: String,
   enrolledStudents: [
     {
-      type: mongoose.Schema.type.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Courses",
     },
   ],
@@ -84,6 +84,9 @@ const teachersSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  courses: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Courses',}
 });
 
 const Teachers = mongoose.model("Teachers", teachersSchema);

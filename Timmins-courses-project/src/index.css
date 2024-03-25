@@ -1,6 +1,8 @@
+
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: #f0e9e9;
+  background-color: #ffffff;
 }
 
 a {
@@ -28,6 +30,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-bottom: 10px;
 }
 button:hover {
   border-color: #646cff;
@@ -48,6 +51,8 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+
+  
 }
 
 .logoImage{
@@ -74,5 +79,30 @@ button:focus-visible {
 .coursesCoverImg{
   width: 100%;
   margin: 0;
+}
+
+.course-header{
+  font-family: "Oswald", sans-serif;
+  font-size:40px;
+  padding: 10px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+}
+
+
+
+.card{
+  max-width:600px;
+  max-height:400px;
+  overflow:hidden;
+  min-height: 310px;
+  margin: 10px;
+  font-family: "Montserrat", sans-serif;;
+}
+
+.card img{
+  max-height: 160px;
 }
 

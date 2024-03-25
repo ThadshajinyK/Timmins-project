@@ -1,4 +1,5 @@
 import cover from "../assets/coverpage.png";
+import DisplayCourses from "./DisplayCourses";
 
 function Courses() {
   return (
@@ -10,7 +11,7 @@ function Courses() {
       />
       <div className="container">
         {/* cards for each courses */}
-
+        <DisplayCourses/>
       </div>
     </div>
   );
