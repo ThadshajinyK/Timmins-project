@@ -48,7 +48,7 @@ const Enrollment = () => {
         phoneNo: phoneNo,
         address: address,
         password: password,
-        enrolledCourses: courseID,
+        enrolledCourses:[courseID]
       })
       .then((response) => {
         console.log(
