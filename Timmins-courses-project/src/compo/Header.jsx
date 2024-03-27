@@ -22,24 +22,24 @@ function Header() {
           <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
             <ul className="  navbar-nav ">
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <a className="nav-link" target="_blank" href="https://timmins-consulting.com/" >
                   Home
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <a className="nav-link" target="_blank" href="https://timmins-consulting.com/timmins-corporate-training/">
                   Training
                 </a>
               </li>
               
               <li className="nav-item">
-                <a className="nav-link" href="/courses">
+                <a className="nav-link" target="_blank" href="/courses">
                   Courses
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Blog
+                <a className="nav-link" target="_blank" href="https://timmins-consulting.com/events/">
+                  Events
                 </a>
               </li>
               
