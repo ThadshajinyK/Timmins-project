@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Courses from "./compo/Courses";
 import Footer from "./compo/Footer";
 import Enrollment from "./compo/Enrollment";
+import { ContactUs } from "./compo/ContactUs";
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
       <Routes>
         <Route path="/courses" element = {<Courses/>}></Route>
         <Route path="/enroll/:courseID" element = {<Enrollment/>}></Route>
+        <Route path="/contact" element = {<ContactUs/>}></Route>
+
       </Routes>
         <Footer/>
       </BrowserRouter>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+
 const Enrollment = () => {
   const {courseID} = useParams();
   const [course, setCourse] = useState([]);
@@ -31,7 +32,7 @@ const Enrollment = () => {
       });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (emailAddress) => {
     //validation
 
     if (password != confirmPassword) {
@@ -55,6 +56,10 @@ const Enrollment = () => {
           "student data successfully enrolled from frontend",
           response.data
         );
+        
+
+
+
         setLastName("");
         setAddress("");
         setDob("");
