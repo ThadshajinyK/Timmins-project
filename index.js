@@ -147,6 +147,8 @@ app.get("/getTeachers", (req, res) => {
 //   }
 // });
 
+
+
 app.post("/postCourse", async (req, res) => {
   try {
     const newCourse = new Courses(req.body);
@@ -250,50 +252,4 @@ app.listen("3002", () => {
   console.log("server is running");
 });
 
-
-//mail sending
-//-------------------------------------
-// const nodemailer = require('nodemailer');
-
-// Create a nodemailer transporter
-// const transporter = nodemailer.createTransport({
-//   service: 'Gmail', // Specify your email service provider
-//   auth: {
-//     user: 'shajiny26@gmail.com', // Your email address
-//     pass: 'Vkthadsha@google1', // Your email password
-//   },
-// });
-
-// Function to send acknowledgment email
-// const sendAcknowledgmentEmail = (studentEmail) => {
-//   const mailOptions = {
-//     from: 'shajiny26@gmail.com', // Your email address
-//     to: studentEmail, // Student's email address
-//     subject: 'Enrollment Acknowledgment', // Email subject
-//     text: `Dear Student,\n\nThank you for enrolling in the  course. We acknowledge your enrollment and look forward to seeing you in the course.\n\nBest regards,\nTimmins Training & Consulting`, // Email body
-//   };
-
-  // Send email
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       console.error('Error sending email:', error);
-//     } else {
-//       console.log('Email sent:', info.response);
-//     }
-//   });
-// };
-
-// Call sendAcknowledgmentEmail function after successful enrollment
-// app.post('/postStudent', async (req, res) => {
-//   const newStudent = new Students(req.body);
-//   try {
-//     await newStudent.save();
-//     // Send acknowledgment email to the enrolled student
-//     sendAcknowledgmentEmail(newStudent.email, req.body.courseName);
-//     res.json(newStudent);
-//   } catch (error) {
-//     console.log('Error posting student data:', error);
-//     res.status(500).json({ error: 'Error posting student data' });
-//   }
-// });
 
