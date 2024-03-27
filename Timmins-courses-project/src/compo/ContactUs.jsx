@@ -9,7 +9,7 @@ export const ContactUs = () => {
 
     emailjs
       .sendForm('service_6dwiys9', 'template_cod2ny2', form.current, {
-        publicKey: 'Hp7zwn8I3jI5UnvZ7',from_name: "Vinoyan Vijayakumar"
+        publicKey: 'Hp7zwn8I3jI5UnvZ7',
       })
       .then(
         () => {
@@ -29,9 +29,8 @@ export const ContactUs = () => {
       <input type="email" name="to_email" required/><br/><br/>
       <label>Message</label>
       <textarea name="message" /><br/><br/>
-      <input type="text" name="from_name" value="itfac thadsha"/><br/><br/>
-      
-      <input className="display-none" type="submit" value="Send" /><br/><br/>
+      <input className="display-none" type="text" name="from_name" value="itfac thadsha"/><br/><br/>
+      <input  type="submit" value="Send" /><br/><br/>
     </form>
   );
 };

@@ -61,10 +61,6 @@ const studentSchema = new mongoose.Schema({
     },
   ],
 
-  password: {
-    type: String,
-    required: true,
-  },
 });
 
 const Students = mongoose.model("Students", studentSchema);
@@ -246,7 +242,7 @@ app.post("/postStudent", async (req, res) => {
       res.json(newStudent);
     }
   } catch (error) {
-    console.log("Error posting student data");
+    console.log("Error posting student data", error);
   }
 });
 

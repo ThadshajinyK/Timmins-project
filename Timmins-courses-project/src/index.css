@@ -105,3 +105,6 @@ button:focus-visible {
   max-height: 160px;
 }
 
+.display-none{
+  display: none;
+}

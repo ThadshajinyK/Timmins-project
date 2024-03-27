@@ -2,10 +2,10 @@ import enrollCover from "../assets/enroll.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import emailjs from "@emailjs/browser";
 
 const Enrollment = () => {
-  const {courseID} = useParams();
+  const { courseID } = useParams();
   const [course, setCourse] = useState([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -13,63 +13,98 @@ const Enrollment = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [address, setAddress] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  
+  
 
   useEffect(() => {
     getCourseById(courseID);
   }, []);
 
+  
+
+  //sendEmail start
+  const sendEmail = (emailAddress, courseName, firstName,lastName) => {
+    const servideId = 'service_6dwiys9';
+    const templated = 'template_cod2ny2';
+    const publicKey = 'Hp7zwn8I3jI5UnvZ7';
+    // console.log(emailAddress , courseName)
+
+    const params = {
+      to_email: emailAddress,
+      courseName: courseName,
+      to_name: firstName + lastName,
+      subject: `Enrollment Confirmation: ${courseName}`,
+      
+    };
+
+    emailjs
+    .send(servideId, templated, params, publicKey)
+    .then(
+      (response) => {
+        console.log("Email sent successfully:", response.text);
+      },
+      (error) => {
+        console.log("Error sending email:", error.text);
+      }
+    );
+  };
+  //end of sendEmail
+
+  //getcourseByid start
   const getCourseById = (courseID) => {
     axios
       .get(`http://localhost:3002/getCourse/${courseID}`)
       .then((response) => {
         setCourse(response.data);
         console.log("successfully fetched course by ID");
+        console.log(response.data)
       })
-      .catch((error) => {
-        console.error("Error fetching course detail from frontend", error);
-      });
+    .catch((error) => {
+      console.error("Error fetching course detail from frontend", error);
+    });
   };
 
-  const handleSubmit = (emailAddress) => {
+  //end of courseByid
+ 
+
+
+  //start of handleSubmit fn 
+  const handleSubmit = () => {
     //validation
 
-    if (password != confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    axios
-      .post("http://localhost:3002/postStudent", {
-        firstName: firstName,
-        lastName: lastName,
-        dob: dob,
-        email: emailAddress,
-        phoneNo: phoneNo,
-        address: address,
-        password: password,
-        enrolledCourses:[courseID]
-      })
-      .then((response) => {
-        console.log(
-          "student data successfully enrolled from frontend",
-          response.data
-        );
+    
+    
+      axios
+        .post("http://localhost:3002/postStudent", {
+          firstName: firstName,
+          lastName: lastName,
+          dob: dob,
+          email: emailAddress,
+          phoneNo: phoneNo,
+          address: address,
         
+          enrolledCourses: [courseID],
+        })
+        .then((response) => {
+          console.log(
+            "student data successfully enrolled from frontend",
+            response.data
+          );
 
+          sendEmail(emailAddress, course.courseName,firstName, lastName);
 
-
-        setLastName("");
-        setAddress("");
-        setDob("");
-        setFirstName("");
-        setEmailAddress("");
-        setConfirmPassword("");
-        setPassword("");
-        setPhoneNo("");
-      });
+          setLastName("");
+          setAddress("");
+          setDob("");
+          setFirstName("");
+          setEmailAddress("");
+          
+         
+          setPhoneNo("");
+        });
+    
   };
+  // end of submit fn
   return (
     <div className="mb-5">
       <img
@@ -79,8 +114,8 @@ const Enrollment = () => {
       />
       {/* form container */}
 
-      <h2 className="course-header ms-5 p-2">Enrollment Form for {course.courseName} Course
-
+      <h2 className="course-header ms-5 p-2">
+        Enrollment Form for {course.courseName} Course
       </h2>
       <div className="container mt-4">
         <div className="form-floating mb-4 col-md-8">
@@ -151,27 +186,8 @@ const Enrollment = () => {
           <label>Address</label>
         </div>
 
-        <div className="form-floating mb-4 col-md-8">
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <label>Password</label>
-        </div>
-
-        <div className="form-floating mb-4 col-md-8">
-          <input
-            type="password"
-            className="form-control"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="re-enterPassword"
-          />
-          <label>Confirm Password</label>
-        </div>
+        
+        
 
         <button onClick={handleSubmit} className="text-white mb-4">
           Submit
