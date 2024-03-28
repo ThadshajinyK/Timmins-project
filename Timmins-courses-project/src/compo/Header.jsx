@@ -33,7 +33,7 @@ function Header() {
               </li>
               
               <li className="nav-item">
-                <a className="nav-link" target="_blank" href="/courses">
+                <a className="nav-link"  href="/courses">
                   Courses
                 </a>
               </li>

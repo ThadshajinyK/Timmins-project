@@ -71,7 +71,6 @@ const Enrollment = () => {
         email: emailAddress,
         phoneNo: phoneNo,
         address: address,
-
         enrolledCourses: [courseID],
       })
       .then((response) => {

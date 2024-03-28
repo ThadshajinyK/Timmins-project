@@ -26,7 +26,7 @@ const courseSchema = new mongoose.Schema({
   ],
   startDate: Date,
   duration: String,
-  courseFee: Number
+  courseFee: Number,
   // taughtBy: [
   //   {
   //     type: mongoose.Schema.Types.ObjectId,
@@ -60,7 +60,6 @@ const studentSchema = new mongoose.Schema({
       ref: "Courses",
     },
   ],
-
 });
 
 const Students = mongoose.model("Students", studentSchema);
@@ -123,31 +122,44 @@ app.get("/getStudents", (req, res) => {
   }
 });
 
-// app.get("/getTeachers", (req, res) => {
-//   try {
-//     Teachers.find({}).then(function (response) {
-//       res.json(response);
-//     });
-//   } catch (error) {
-//     console.log("Error fetching Teachers records");
-//     console.log(error);
-//   }
-// });
+app.post("/postStudent", async (req, res) => {
+  const { email, enrolledCourses, ...studentData } = req.body;
+  try {
+    let existingStudent = await Students.findOne({ email: email });
 
-// POST methods
+    if (existingStudent) {
+      //student already exists, add new enrolledcourseId
+      await Students.updateOne(
+        { _id: existingStudent._id },
+        { $addToSet: { enrolledCourses: enrolledCourses } }
+      );
+      await existingStudent.save();
+      //update the course by adding the enrolledStudent id
+      await Courses.updateOne(
+        {_id: enrolledCourses},
+        {$addToSet: { enrolledStudents: existingStudent._id}}
+      )
+        console.log(enrolledCourses)
+        console.log(existingStudent)
 
-// app.post("/postCourse", async (req, res) => {
-//   const newCourse = new Courses(req.body);
-
-//   try {
-//     await newCourse.save();
-//     res.json(newCourse);
-//   } catch (error) {
-//     console.log("Error posting course data");
-//   }
-// });
-
-
+      res.json(existingStudent);
+    } else {
+      //create new student
+      const newStudent = new Students(req.body);
+      await newStudent.save();
+      res.json(newStudent);
+      const enrolledCourseId = newStudent.enrolledCourses;
+      console.log(enrolledCourseId);
+      await Courses.updateOne(
+        { _id: enrolledCourseId },
+        { $set: { enrolledStudents: newStudent._id } }
+      );
+      console.log(Courses.findById(enrolledCourseId));
+    }
+  } catch (error) {
+    console.log("Error posting student data", error);
+  }
+});
 
 app.post("/postCourse", async (req, res) => {
   try {
@@ -162,31 +174,11 @@ app.post("/postCourse", async (req, res) => {
     res.json(newCourse);
   } catch (error) {
     console.error("Error posting course data", error);
-    console.log(error)
+    console.log(error);
   }
 });
 
-
-
-//Delete function eluthanum
-// Handle student deletion
-app.delete("/deleteStudent/:studentId", async (req, res) => {
-  const studentId = req.params.studentId;
-  try {
-    await Students.findByIdAndDelete(studentId);
-
-    // Remove student from enrolledStudents array in all related courses
-    await Courses.updateMany(
-      { enrolledStudents: studentId },
-      { $pull: { enrolledStudents: studentId } }
-    );
-
-    res.json({ message: "Student deleted successfully" });
-  } catch (error) {
-    console.log("Error deleting student:", error);
-    res.status(500).json({ error: "Error deleting student" });
-  }
-});
+//Delete function
 
 // Handle course deletion
 app.delete("/deleteCourse/:courseId", async (req, res) => {
@@ -207,49 +199,8 @@ app.delete("/deleteCourse/:courseId", async (req, res) => {
   }
 });
 
-// app.post("/postStudent", async (req, res) => {
-//   const newStudent = new Students(req.body);
-//   try {
-//     await newStudent.save();
-//     res.json(newStudent);
-//   } catch (error) {
-//     console.log("Error posting student data");
-//   }
-// });
 
-// app.post("/postTeacher", async (req, res) => {
-//   const newTeacher = new Teachers(req.body);
-//   try {
-//     await newTeacher.save();
-//     res.json(newTeacher);
-//   } catch (error) {
-//     console.log("Error posting teacher data");
-//   }
-// });
-
-app.post("/postStudent", async (req, res) => {
-  const { email, enrolledCourses, ...studentData } = req.body;
-  try {
-    let existingStudent = await Students.findOne({email: email});
-
-    if (existingStudent) {
-      //student already exists, update enroleldSourses
-      existingStudent.enrolledCourses.$addToSet(...enrolledCourses);
-      await existingStudent.save();
-      res.json(existingStudent);
-    } else {
-      //create new student
-      const newStudent = new Students(req.body);
-      await newStudent.save();
-      res.json(newStudent);
-    }
-  } catch (error) {
-    console.log("Error posting student data", error);
-  }
-});
 
 app.listen("3002", () => {
   console.log("server is running");
 });
-
-
