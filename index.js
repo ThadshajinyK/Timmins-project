@@ -111,6 +111,17 @@ app.get("/getCourse/:_id", (req, res) => {
   }
 });
 
+app.get("/getStudent/:_id", (req, res) => {
+  try {
+    const studentID = req.params._id;
+    Students.findById(studentID).then(function (student) {
+      res.json(student);
+    });
+  } catch (error) {
+    console.log("Error fetching course By id ", error);
+  }
+});
+
 app.get("/getStudents", (req, res) => {
   try {
     Students.find({}).then(function (response) {
@@ -121,6 +132,18 @@ app.get("/getStudents", (req, res) => {
     console.log(error);
   }
 });
+
+// app.get("/studentsCount/:_id", (req, res) =>{
+//   try{
+//     const _id = req.params._id;
+//     const studentsCount = Courses.find({_id: _id}).enrolledCourses.count()
+//     console.log(studentsCount)
+
+//   }catch(error){
+//     console.log("Error finding the count")
+//     console.log(error)
+//   }
+// })
 
 app.post("/postStudent", async (req, res) => {
   const { email, enrolledCourses, ...studentData } = req.body;

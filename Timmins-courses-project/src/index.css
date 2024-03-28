@@ -118,3 +118,8 @@ button:focus-visible {
   margin-top: 50px;
   margin-left: 100px;
 }
+
+.deletebutton{
+  cursor: pointer;
+  padding: 10px;
+}

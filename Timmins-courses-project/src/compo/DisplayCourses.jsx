@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CardImg from "../assets/courses.png";
+import { Icon } from "@iconify-icon/react";
 
 const DisplayCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -12,6 +13,19 @@ const DisplayCourses = () => {
 
   const addNewCourse =() => {
     window.location.href =`/addCourse`
+  }
+
+  const handleDelete =(courseID) =>{
+    try{
+      axios.delete(`http://localhost:3002/deleteCourse/${courseID}`)
+      .then((response)=>{
+        console.log("Successfully deleted the course", response.data)
+      })
+    }catch(error){
+      console.log("Error Deleting the course",error)
+    }
+    
+
   }
 
   useEffect(() => {
@@ -58,12 +72,21 @@ const DisplayCourses = () => {
                     </h5>
                     <div className="card-text">
                       <p>Course Fee: {items.courseFee}$</p>
+                      <div className="d-flex justify-content-between">
                       <button
                         onClick={() => handleEnroll(items._id)}
                         className="text-white"
                       >
                         Enroll
                       </button>
+                      
+                      <Icon onClick={()=> handleDelete(items._id)} className="deletebutton" icon="ic:baseline-delete" width="2rem" height="2rem"  style={{color:"black"}} />
+
+                      
+
+                      </div>
+                      
+
                      
                     </div>
                   </div>

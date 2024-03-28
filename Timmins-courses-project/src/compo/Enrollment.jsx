@@ -6,13 +6,15 @@ import emailjs from "@emailjs/browser";
 
 const Enrollment = () => {
   const { courseID } = useParams();
-  const [course, setCourse] = useState([]);
+  const [course, setCourse] = useState({});
+  const [enrolledStudents, setEnrolledStudents] = useState([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [address, setAddress] = useState("");
+
 
   useEffect(() => {
     getCourseById(courseID);
@@ -43,6 +45,21 @@ const Enrollment = () => {
   };
   //end of sendEmail
 
+  //getStudentById
+
+  const fetchStudentDetails = (studentID) => {
+    axios
+      .get(`http://localhost:3002/getStudent/${studentID}`)
+      .then((response) => {
+        //*********************** */    
+        // setStudent(response.data);
+        console.log("succesfully fetch student by id", response.data);
+      })
+      .catch((error) => {
+        console.log("Error in getting student details", error);
+      });
+  };
+
   //getcourseByid start
   const getCourseById = (courseID) => {
     axios
@@ -50,7 +67,11 @@ const Enrollment = () => {
       .then((response) => {
         setCourse(response.data);
         console.log("successfully fetched course by ID");
-        console.log(response.data);
+        setEnrolledStudents(response.data.enrolledStudents);
+        //fetch details of the enrolled students
+        response.data.enrolledStudents.forEach((studentID) => {
+          fetchStudentDetails(studentID);
+        });
       })
       .catch((error) => {
         console.error("Error fetching course detail from frontend", error);
@@ -114,13 +135,13 @@ const Enrollment = () => {
           <b>Course fee:</b> {course.courseFee}$
         </p>
         <p>
-          <b>No of students enrolled for this course:</b>{" "}
-          {course.enrolledStudents}
+          <b>No of students enrolled for this course:</b>
+          {" " + enrolledStudents.length} 
         </p>
-        <p>
-          <b>Details of the students who enrolled for this course</b>
-          {course.enrolledStudents}
-        </p>
+
+        {/* <b>Details of the students who enrolled for this course:</b> */}
+        
+        
       </div>
 
       {/* form container */}
