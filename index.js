@@ -26,13 +26,13 @@ const courseSchema = new mongoose.Schema({
   ],
   startDate: Date,
   duration: String,
-  courseFee: Number,
-  taughtBy: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Teachers",
-    },
-  ],
+  courseFee: Number
+  // taughtBy: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Teachers",
+  //   },
+  // ],
 });
 
 const Courses = mongoose.model("Courses", courseSchema);
@@ -65,27 +65,27 @@ const studentSchema = new mongoose.Schema({
 
 const Students = mongoose.model("Students", studentSchema);
 
-const teachersSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  courses: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Courses",
-  },
-});
+// const teachersSchema = new mongoose.Schema({
+//   firstName: {
+//     type: String,
+//     required: true,
+//   },
+//   lastName: {
+//     type: String,
+//     required: true,
+//   },
+//   email: {
+//     type: String,
+//     required: true,
+//     unique: true,
+//   },
+//   courses: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Courses",
+//   },
+// });
 
-const Teachers = mongoose.model("Teachers", teachersSchema);
+// const Teachers = mongoose.model("Teachers", teachersSchema);
 
 /** HTTP methods */
 
@@ -123,16 +123,16 @@ app.get("/getStudents", (req, res) => {
   }
 });
 
-app.get("/getTeachers", (req, res) => {
-  try {
-    Teachers.find({}).then(function (response) {
-      res.json(response);
-    });
-  } catch (error) {
-    console.log("Error fetching Teachers records");
-    console.log(error);
-  }
-});
+// app.get("/getTeachers", (req, res) => {
+//   try {
+//     Teachers.find({}).then(function (response) {
+//       res.json(response);
+//     });
+//   } catch (error) {
+//     console.log("Error fetching Teachers records");
+//     console.log(error);
+//   }
+// });
 
 // POST methods
 
@@ -217,15 +217,15 @@ app.delete("/deleteCourse/:courseId", async (req, res) => {
 //   }
 // });
 
-app.post("/postTeacher", async (req, res) => {
-  const newTeacher = new Teachers(req.body);
-  try {
-    await newTeacher.save();
-    res.json(newTeacher);
-  } catch (error) {
-    console.log("Error posting teacher data");
-  }
-});
+// app.post("/postTeacher", async (req, res) => {
+//   const newTeacher = new Teachers(req.body);
+//   try {
+//     await newTeacher.save();
+//     res.json(newTeacher);
+//   } catch (error) {
+//     console.log("Error posting teacher data");
+//   }
+// });
 
 app.post("/postStudent", async (req, res) => {
   const { email, enrolledCourses, ...studentData } = req.body;
