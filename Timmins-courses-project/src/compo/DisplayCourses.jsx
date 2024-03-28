@@ -1,18 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import CardImg from '../assets/courses.png'
+import CardImg from "../assets/courses.png";
 
 const DisplayCourses = () => {
   const [courses, setCourses] = useState([]);
-  
-  const handleEnroll =(courseID) =>{
+
+  const handleEnroll = (courseID) => {
     // Redirect to the enrollment page with the course ID
     window.location.href = `/enroll/${courseID}`;
+  };
+
+  const addNewCourse =() => {
+    window.location.href =`/addCourse`
   }
 
   useEffect(() => {
     getAllCourses();
   }, []);
+  
   const getAllCourses = () => {
     axios
       .get("http://localhost:3002/getCourses")
@@ -28,11 +33,18 @@ const DisplayCourses = () => {
   return (
     <>
       <div className="mb-5">
-        <h2 className="course-header">Course Details</h2>
-        
-          <div className="row">
-            {courses.map((items) => (
-              <>
+        <div className="row m-2">
+          <div className="col-10">
+            <h2 className="course-header">Course Details</h2>
+          </div>
+
+          <div className="col-2">
+            <button onClick={addNewCourse} className="btn btn-dark mt-4">Add new course</button>
+          </div>
+        </div>
+        <div className="row">
+          {courses.map((items) => (
+            <>
               <div key={items._id} className="col-lg-6">
                 <div className="card mb-3">
                   <img
@@ -41,20 +53,25 @@ const DisplayCourses = () => {
                     alt={items.courseName}
                   />
                   <div className="card-body">
-                    <h5 className="card-title"><b>{items.courseName}</b></h5>
+                    <h5 className="card-title">
+                      <b>{items.courseName}</b>
+                    </h5>
                     <div className="card-text">
-                        <p>Course Fee: {items.courseFee}$</p>
-                        <button onClick={() => handleEnroll(items._id)} className="text-white">Enroll </button>
-                        <p>{items.description}</p>
-                        </div>
-                    
+                      <p>Course Fee: {items.courseFee}$</p>
+                      <button
+                        onClick={() => handleEnroll(items._id)}
+                        className="text-white"
+                      >
+                        Enroll
+                      </button>
+                     
+                    </div>
                   </div>
                 </div>
-                </div>
-              </>
-            ))}
-          </div>
-        
+              </div>
+            </>
+          ))}
+        </div>
       </div>
     </>
   );

@@ -13,20 +13,16 @@ const Enrollment = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [address, setAddress] = useState("");
-  
-  
 
   useEffect(() => {
     getCourseById(courseID);
   }, []);
 
-  
-
   //sendEmail start
-  const sendEmail = (emailAddress, courseName, firstName,lastName) => {
-    const servideId = 'service_6dwiys9';
-    const templated = 'template_cod2ny2';
-    const publicKey = 'Hp7zwn8I3jI5UnvZ7';
+  const sendEmail = (emailAddress, courseName, firstName, lastName) => {
+    const servideId = "service_6dwiys9";
+    const templated = "template_cod2ny2";
+    const publicKey = "Hp7zwn8I3jI5UnvZ7";
     // console.log(emailAddress , courseName)
 
     const params = {
@@ -34,12 +30,9 @@ const Enrollment = () => {
       courseName: courseName,
       to_name: firstName + lastName,
       subject: `Enrollment Confirmation: ${courseName}`,
-      
     };
 
-    emailjs
-    .send(servideId, templated, params, publicKey)
-    .then(
+    emailjs.send(servideId, templated, params, publicKey).then(
       (response) => {
         console.log("Email sent successfully:", response.text);
       },
@@ -57,52 +50,46 @@ const Enrollment = () => {
       .then((response) => {
         setCourse(response.data);
         console.log("successfully fetched course by ID");
-        console.log(response.data)
+        console.log(response.data);
       })
-    .catch((error) => {
-      console.error("Error fetching course detail from frontend", error);
-    });
+      .catch((error) => {
+        console.error("Error fetching course detail from frontend", error);
+      });
   };
 
   //end of courseByid
- 
 
-
-  //start of handleSubmit fn 
+  //start of handleSubmit fn
   const handleSubmit = () => {
     //validation
 
-    
-    
-      axios
-        .post("http://localhost:3002/postStudent", {
-          firstName: firstName,
-          lastName: lastName,
-          dob: dob,
-          email: emailAddress,
-          phoneNo: phoneNo,
-          address: address,
-        
-          enrolledCourses: [courseID],
-        })
-        .then((response) => {
-          console.log(
-            "student data successfully enrolled from frontend",
-            response.data
-          );
+    axios
+      .post("http://localhost:3002/postStudent", {
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        email: emailAddress,
+        phoneNo: phoneNo,
+        address: address,
 
-          sendEmail(emailAddress, course.courseName,firstName, lastName);
+        enrolledCourses: [courseID],
+      })
+      .then((response) => {
+        console.log(
+          "student data successfully enrolled from frontend",
+          response.data
+        );
 
-          setLastName("");
-          setAddress("");
-          setDob("");
-          setFirstName("");
-          setEmailAddress("");
-          
-         
-          setPhoneNo("");
-        });
-    
+        sendEmail(emailAddress, course.courseName, firstName, lastName);
+
+        setLastName("");
+        setAddress("");
+        setDob("");
+        setFirstName("");
+        setEmailAddress("");
+
+        setPhoneNo("");
+      });
   };
   // end of submit fn
   return (
@@ -112,11 +99,38 @@ const Enrollment = () => {
         src={enrollCover}
         alt="enrollment form cover page img"
       />
-      {/* form container */}
 
-      <h2 className="course-header ms-5 p-2">
-        Enrollment Form for {course.courseName} Course
-      </h2>
+      {/* Course Details displaying container */}
+      <div className="container">
+        <h1 className="mt-4 mb-4">{course.courseName}</h1>
+
+        <p>{course.description}</p>
+        <p>
+          <b>Course Start Date:</b> {course.startDate}
+        </p>
+        <p>
+          <b>Course Duration :</b> {course.duration}
+        </p>
+        <p>
+          <b>Course fee:</b> {course.courseFee}$
+        </p>
+        <p>
+          <b>No of students enrolled for this course:</b>{" "}
+          {course.enrolledStudents}
+        </p>
+        <p>
+          <b>Details of the students who enrolled for this course</b>
+          {course.enrolledStudents}
+        </p>
+      </div>
+
+      {/* form container */}
+      <div className="container">
+        <h2 className="course-header">
+          Enrollment Form for {course.courseName} Course
+        </h2>
+      </div>
+
       <div className="container mt-4">
         <div className="form-floating mb-4 col-md-8">
           <input
@@ -185,9 +199,6 @@ const Enrollment = () => {
           />
           <label>Address</label>
         </div>
-
-        
-        
 
         <button onClick={handleSubmit} className="text-white mb-4">
           Submit
