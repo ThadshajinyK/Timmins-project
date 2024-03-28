@@ -152,7 +152,7 @@ app.post("/postStudent", async (req, res) => {
       console.log(enrolledCourseId);
       await Courses.updateOne(
         { _id: enrolledCourseId },
-        { $set: { enrolledStudents: newStudent._id } }
+        { $addToset: { enrolledStudents: newStudent._id } }
       );
       console.log(Courses.findById(enrolledCourseId));
     }
@@ -188,8 +188,8 @@ app.delete("/deleteCourse/:courseId", async (req, res) => {
 
     // Remove course from enrolledCourses array in all related students
     await Students.updateMany(
-      { enrolledCourses: courseId },
-      { $pull: { enrolledCourses: courseId } }
+      { enrolledCourses: courseId },// Filter: Find all students who are enrolled in the deleted course
+      { $pull: { enrolledCourses: courseId } } // Update: Pull the deleted courseId from enrolledCourses array
     );
 
     res.json({ message: "Course deleted successfully" });
