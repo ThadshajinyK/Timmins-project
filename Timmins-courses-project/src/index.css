@@ -123,3 +123,7 @@ button:focus-visible {
   cursor: pointer;
   padding: 10px;
 }
+
+.student-img{
+  margin:10px auto;
+}
