@@ -222,6 +222,40 @@ app.delete("/deleteCourse/:courseId", async (req, res) => {
   }
 });
 
+///when delete the student account completely we can use this
+app.delete("/deleteStudent/:studentId", async(req, res) =>{
+  const studentId = req.params.studentId;
+
+  try{
+    await Students.findByIdAndDelete(studentId);
+    //delete the student record in each courses
+
+    await Courses.updateMany(
+      { enrolledStudents: studentId},
+      { $pull: { enrolledStudents: studentId}}
+    )
+
+  }catch(error){
+    console.log("Error in deleting student", error)
+  }
+})
+
+//need to write a deleteStudent fn to delete a student from particular course enrollment
+// deleteStudentId from corresponding course
+//remove the correspoding courseId from the student table
+
+app.delete("/deleteStudentByCourse/:courseID/:studentID", async(req, res) =>{
+  const courseId = req.params.courseID;
+  const studentId = req.params.studentID;
+  try{
+    //write the query
+    console.log("Successfully deleted the student from this course")
+
+  }catch(error){
+    console.log("Error deleting student from this course", error)
+
+  }
+})
 
 
 app.listen("3002", () => {
