@@ -114,11 +114,6 @@ button:focus-visible {
   display: none;
 }
 
-.formImage{
-  margin-top: 50px;
-  margin-left: 100px;
-}
-
 .deletebutton{
   cursor: pointer;
   padding: 10px;
@@ -126,4 +121,20 @@ button:focus-visible {
 
 .student-img{
   margin:10px auto;
+}
+
+.text-purple{
+  color: #6c50bee4;
+}
+
+.formCoverImg{
+  margin: 0 auto;
+  height: 90%;
+  width: 90%;
+}
+
+.addCourseFormImage{
+  margin: 0 auto;
+  height: 90%;
+  width: 90%;
 }

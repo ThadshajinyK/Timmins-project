@@ -3,7 +3,7 @@ import Header from "./compo/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Courses from "./compo/Courses";
 import Footer from "./compo/Footer";
-import Enrollment from "./compo/Enrollment";
+import DisplayCourseDetails from "./compo/DisplayCourseDetails";
 import { ContactUs } from "./compo/ContactUs";
 import AddCourse from "./compo/AddCourse";
 
@@ -14,7 +14,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/courses" element = {<Courses/>}></Route>
-        <Route path="/enroll/:courseID" element = {<Enrollment/>}></Route>
+        <Route path="/displayCourse/:courseID" element = {<DisplayCourseDetails/>}></Route>
         <Route path="/contact" element = {<ContactUs/>}></Route>
         <Route path="/addCourse" element = {<AddCourse/>}></Route>
 

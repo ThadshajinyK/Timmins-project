@@ -11,27 +11,26 @@ const DisplayCourses = () => {
     window.location.href = `/enroll/${courseID}`;
   };
 
-  const addNewCourse =() => {
-    window.location.href =`/addCourse`
-  }
+  const addNewCourse = () => {
+    window.location.href = `/addCourse`;
+  };
 
-  const handleDelete =(courseID) =>{
-    try{
-      axios.delete(`http://localhost:3002/deleteCourse/${courseID}`)
-      .then((response)=>{
-        console.log("Successfully deleted the course", response.data)
-      })
-    }catch(error){
-      console.log("Error Deleting the course",error)
+  const handleDelete = (courseID) => {
+    try {
+      axios
+        .delete(`http://localhost:3002/deleteCourse/${courseID}`)
+        .then((response) => {
+          console.log("Successfully deleted the course", response.data);
+        });
+    } catch (error) {
+      console.log("Error Deleting the course", error);
     }
-    
-
-  }
+  };
 
   useEffect(() => {
     getAllCourses();
   }, []);
-  
+
   const getAllCourses = () => {
     axios
       .get("http://localhost:3002/getCourses")
@@ -53,7 +52,9 @@ const DisplayCourses = () => {
           </div>
 
           <div className="col-2">
-            <button onClick={addNewCourse} className="btn btn-dark mt-4">Add new course</button>
+            <button onClick={addNewCourse} className="btn btn-dark mt-4">
+              Add new course
+            </button>
           </div>
         </div>
         <div className="row">
@@ -73,21 +74,22 @@ const DisplayCourses = () => {
                     <div className="card-text">
                       <p>Course Fee: {items.courseFee}$</p>
                       <div className="d-flex justify-content-between">
-                      <button
-                        onClick={() => handleEnroll(items._id)}
-                        className="text-white"
-                      >
-                        Enroll
-                      </button>
-                      
-                      <Icon onClick={()=> handleDelete(items._id)} className="deletebutton" icon="ic:baseline-delete" width="2rem" height="2rem"  style={{color:"black"}} />
+                        <button
+                          onClick={() => handleEnroll(items._id)}
+                          className="text-white"
+                        >
+                          Course Details
+                        </button>
 
-                      
-
+                        <Icon
+                          onClick={() => handleDelete(items._id)}
+                          className="deletebutton"
+                          icon="ic:baseline-delete"
+                          width="2rem"
+                          height="2rem"
+                          style={{ color: "black" }}
+                        />
                       </div>
-                      
-
-                     
                     </div>
                   </div>
                 </div>
