@@ -8,7 +8,7 @@ const DisplayCourses = () => {
 
   const handleEnroll = (courseID) => {
     // Redirect to the enrollment page with the course ID
-    window.location.href = `/enroll/${courseID}`;
+    window.location.href = `/displayCourse/${courseID}`;
   };
 
   const addNewCourse = () => {
