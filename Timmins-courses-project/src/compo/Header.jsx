@@ -5,7 +5,7 @@ function Header() {
     <div className="container-fluid line">
       <nav className="navbar navbar-expand-md">
         
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="https://timmins-consulting.com/">
             <img className="logoImage"src={Logo} alt="timmins logo" />
           </a> 
           <button
@@ -14,13 +14,13 @@ function Header() {
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
             aria-controls="navbarNav"
-            aria-expanded="false"
+            aria-expanded="true"
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
-            <ul className="  navbar-nav ">
+            <ul className="navbar-nav">
               <li className="nav-item">
                 <a className="nav-link" target="_blank" href="https://timmins-consulting.com/" >
                   Home
