@@ -1,12 +1,29 @@
 const express = require("express");
-const mongoose = require("mongoose");
+// const connectDB = require("./config/db.js")
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+mongoURI ="mongodb+srv://shajiny:shajiny-timmins-project@cluster0.mvioz0c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-mongoose.connect("mongodb://localhost:27017/Timmins");
+// connectDB();
+//mongoose.connect(mongoURI);
+
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(mongoURI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`)
+  } catch (error) {
+    console.log("error",error)
+    process.exit();
+  }
+};
+
+connectDB()
+
+
 
 /** import model */
 const courseSchema = new mongoose.Schema({
@@ -159,11 +176,11 @@ app.post("/postStudent", async (req, res) => {
       await existingStudent.save();
       //update the course by adding the enrolledStudent id
       await Courses.updateOne(
-        {_id: enrolledCourses},
-        {$addToSet: { enrolledStudents: existingStudent._id}}
-      )
-        console.log(enrolledCourses)
-        console.log(existingStudent)
+        { _id: enrolledCourses },
+        { $addToSet: { enrolledStudents: existingStudent._id } }
+      );
+      console.log(enrolledCourses);
+      console.log(existingStudent);
 
       res.json(existingStudent);
     } else {
@@ -171,7 +188,7 @@ app.post("/postStudent", async (req, res) => {
       const newStudent = new Students(req.body);
       await newStudent.save();
       res.json(newStudent);
-      const enrolledCourseId = newStudent.enrolledCourses;
+      const enrolledCourseId = req.body.enrolledCourses;
       console.log(enrolledCourseId);
       await Courses.updateOne(
         { _id: enrolledCourseId },
@@ -211,7 +228,7 @@ app.delete("/deleteCourse/:courseId", async (req, res) => {
 
     // Remove course from enrolledCourses array in all related students
     await Students.updateMany(
-      { enrolledCourses: courseId },// Filter: Find all students who are enrolled in the deleted course
+      { enrolledCourses: courseId }, // Filter: Find all students who are enrolled in the deleted course
       { $pull: { enrolledCourses: courseId } } // Update: Pull the deleted courseId from enrolledCourses array
     );
 
@@ -223,40 +240,36 @@ app.delete("/deleteCourse/:courseId", async (req, res) => {
 });
 
 ///when delete the student account completely we can use this
-app.delete("/deleteStudent/:studentId", async(req, res) =>{
+app.delete("/deleteStudent/:studentId", async (req, res) => {
   const studentId = req.params.studentId;
 
-  try{
+  try {
     await Students.findByIdAndDelete(studentId);
     //delete the student record in each courses
 
     await Courses.updateMany(
-      { enrolledStudents: studentId},
-      { $pull: { enrolledStudents: studentId}}
-    )
-
-  }catch(error){
-    console.log("Error in deleting student", error)
+      { enrolledStudents: studentId },
+      { $pull: { enrolledStudents: studentId } }
+    );
+  } catch (error) {
+    console.log("Error in deleting student", error);
   }
-})
+});
 
 //need to write a deleteStudent fn to delete a student from particular course enrollment
 // deleteStudentId from corresponding course
 //remove the correspoding courseId from the student table
 
-app.delete("/deleteStudentByCourse/:courseID/:studentID", async(req, res) =>{
+app.delete("/deleteStudentByCourse/:courseID/:studentID", async (req, res) => {
   const courseId = req.params.courseID;
   const studentId = req.params.studentID;
-  try{
+  try {
     //write the query
-    console.log("Successfully deleted the student from this course")
-
-  }catch(error){
-    console.log("Error deleting student from this course", error)
-
+    console.log("Successfully deleted the student from this course");
+  } catch (error) {
+    console.log("Error deleting student from this course", error);
   }
-})
-
+});
 
 app.listen("3002", () => {
   console.log("server is running");
