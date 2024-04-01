@@ -6,8 +6,8 @@ const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
 app.use(cors());
-//mongoURI ="mongodb+srv://shajiny:shajiny-timmins-project@cluster0.mvioz0c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-mongoURI = "mongodb://localhost:27017/Timmins";
+mongoURI ="mongodb+srv://shajiny:shajiny-timmins-project@cluster0.mvioz0c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+//mongoURI = "mongodb://localhost:27017/Timmins";
 // connectDB();
 //mongoose.connect(mongoURI);
 
