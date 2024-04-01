@@ -6,24 +6,22 @@ const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
 app.use(cors());
-mongoURI ="mongodb+srv://shajiny:shajiny-timmins-project@cluster0.mvioz0c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
+//mongoURI ="mongodb+srv://shajiny:shajiny-timmins-project@cluster0.mvioz0c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+mongoURI = "mongodb://localhost:27017/Timmins";
 // connectDB();
 //mongoose.connect(mongoURI);
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(mongoURI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`)
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.log("error",error)
+    console.log("error", error);
     process.exit();
   }
 };
 
-connectDB()
-
-
+connectDB();
 
 /** import model */
 const courseSchema = new mongoose.Schema({
@@ -81,30 +79,6 @@ const studentSchema = new mongoose.Schema({
 
 const Students = mongoose.model("Students", studentSchema);
 
-// const teachersSchema = new mongoose.Schema({
-//   firstName: {
-//     type: String,
-//     required: true,
-//   },
-//   lastName: {
-//     type: String,
-//     required: true,
-//   },
-//   email: {
-//     type: String,
-//     required: true,
-//     unique: true,
-//   },
-//   courses: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Courses",
-//   },
-// });
-
-// const Teachers = mongoose.model("Teachers", teachersSchema);
-
-/** HTTP methods */
-
 //GET Methods
 app.get("/getCourses", (req, res) => {
   try {
@@ -150,23 +124,10 @@ app.get("/getStudents", (req, res) => {
   }
 });
 
-// app.get("/studentsCount/:_id", (req, res) =>{
-//   try{
-//     const _id = req.params._id;
-//     const studentsCount = Courses.find({_id: _id}).enrolledCourses.count()
-//     console.log(studentsCount)
-
-//   }catch(error){
-//     console.log("Error finding the count")
-//     console.log(error)
-//   }
-// })
-
 app.post("/postStudent", async (req, res) => {
-  const { email, enrolledCourses, ...studentData } = req.body;
+  const { email, enrolledCourses } = req.body;
   try {
     let existingStudent = await Students.findOne({ email: email });
-
     if (existingStudent) {
       //student already exists, add new enrolledcourseId
       await Students.updateOne(
@@ -179,8 +140,8 @@ app.post("/postStudent", async (req, res) => {
         { _id: enrolledCourses },
         { $addToSet: { enrolledStudents: existingStudent._id } }
       );
-      console.log(enrolledCourses);
-      console.log(existingStudent);
+      console.log("existing student updated with course ID", enrolledCourses);
+      console.log("existing studnet:", existingStudent._id);
 
       res.json(existingStudent);
     } else {
@@ -188,18 +149,28 @@ app.post("/postStudent", async (req, res) => {
       const newStudent = new Students(req.body);
       await newStudent.save();
       res.json(newStudent);
-      const enrolledCourseId = req.body.enrolledCourses;
-      console.log(enrolledCourseId);
+
+      //const savedStudent = await Students.find({email: newStudent.email})
+      console.log("saved(new) student details are: ", newStudent);
+      console.log("enrolled course id :,", enrolledCourses);
+      
+      // let savedStudent = await Students.findOne({email: email})
+      // console.log("saved student id:", savedStudent._id);
+      // console.log("saved student course id: ", savedStudent.enrolledCourses)
+      
+      // ithuku mela ellam ok. but enrolled students la maddum etho error pannuthu.
       await Courses.updateOne(
-        { _id: enrolledCourseId },
-        { $addToset: { enrolledStudents: newStudent._id } }
+        { _id: enrolledCourses},
+        { $addToSet: { enrolledStudents:newStudent._id } }
       );
-      console.log(Courses.findById(enrolledCourseId));
+      //console.log(Courses.findById(enrolledCourseId).data);
     }
   } catch (error) {
     console.log("Error posting student data", error);
   }
 });
+
+
 
 app.post("/postCourse", async (req, res) => {
   try {

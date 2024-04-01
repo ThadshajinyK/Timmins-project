@@ -229,9 +229,6 @@ const DisplayCourseDetails = () => {
         </button>
           </div>
          
-
-
-        
         </div>
         
       </div>
